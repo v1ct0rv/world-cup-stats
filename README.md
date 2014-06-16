@@ -24,6 +24,7 @@ grunt serve
 Launch your express server in `debug-brk` mode with a node-inspector tab.
 ```bash
 grunt serve:debug
+```
 
 ## Access the result
 
