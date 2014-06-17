@@ -1,0 +1,13 @@
+You're all set! Your app should now be live. To view it run
+    cd dist && heroku open
+If you're using mongoDB, be sure to add a database to your heroku app.
+    heroku addons:add mongohq
+
+
+To deploy a new build
+    grunt build
+Then enter the dist folder to commit these updates:
+    cd dist && git commit -am "describe your changes here"
+
+Finally, deploy your updated build to Heroku with
+    git push heroku master

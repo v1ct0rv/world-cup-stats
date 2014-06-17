@@ -1,21 +1,120 @@
-<div ng-include="'partials/navbar'"></div>
-
-<div class="jumbotron">
-  <h1>'Allo, 'Allo <span ng-show="currentUser">{{ currentUser.name }}</span>!</h1>
-  <p class="lead">
-    <img src="images/yeoman.png" alt="I'm Yeoman"><br>
-    Always a pleasure scaffolding your apps.
-  </p>
-  <p><a class="btn btn-lg btn-success" ng-href="#">Splendid!</a></p>
+<div class="header">
+    <!--<ul class="nav nav-pills pull-right">
+        <li class="active"><a ng-href="#">Home</a></li>
+        <li><a ng-href="#">About</a></li>
+        <li><a ng-href="#">Contact</a></li>
+    </ul>-->
+    <h1 class="text-muted" style="text-align: center">2014 FIFA World Cup</h1>
+    <button type="button" class="btn btn-primary btn-small pull-right" ng-click="updateResuts()">
+      <span class="glyphicon glyphicon-refresh"></span>
+    </button>
 </div>
 
-<div class="row marketing">
-  <div ng-repeat="thing in awesomeThings">
-      <h4>{{thing.name}}</h4>
-      <p>{{thing.info}}</p>
-  </div>
+<div>
+    <!--<button ng-click="toggleView()"> Toggle</button>-->
 </div>
+<!-- GROUP's PHASE  -->
+<div class="row">
+    <div class="col-sm-4" ng-repeat="(group, groupData) in groupsMatches">
+        <h1 style="text-align: center">Grupo {{group}}</h1>
+        <div ng-repeat="match in groupData.matches" style="display: inline-block; padding: 5px; width: 154px; height: 53px; margin-left: {{$index%2 * 23}}px; border-left: {{$index%2}}px solid #cdd0d4;">
+            <input type="text" style="width:20px; height:21px; position: absolute; margin-left: 5px; margin-top: 2px" ng-model="match[0].score">
+            <span style="display: inline; margin-left: 25px"><img ng-src="/images/country_flags/{{match[0].country}}.png" width="50" height="43" title="{{match[0].fullCountryName}}" />vs<img ng-src="/images/country_flags/{{match[1].country}}.png" width="50" height="43" title="{{match[1].fullCountryName}}" /></span>
+            <input type="text" style="width:20px; height:21px; position: absolute; margin-top: 2px" ng-model="match[1].score" />
+        </div>
+    </div>
+
+</div>
+
+
+<!-- SECOND PHASE  -->
+<div style="position: relative; margin-top:20px; height: 560px">
+
+    <div ng-repeat="(title, match) in secondStageMatches.roundOf16" ng-class="($index < 4) ? 'roundOf16Left' : 'roundOf16Right'" style="top:{{($index < 4) ? 150 * $index : 150*($index - 4)}}px">
+        <div class="matchRow">
+            <input type="text" class="inputScore" ng-model="match[0].score">
+            <img ng-src="/images/country_flags/{{match[0].country}}.png" width="50" height="43">
+            <div class="radioContainer"><input ng-show="match[0].score == match[1].score" type="radio" ng-checked="true" name="{{title}}" ng-click="victorByPenalties('roundOf16', title, 0)" ></div>
+        </div>
+        <div class="vsDiv">
+            <span>vs</span>
+        </div>
+        <div class="matchRow">
+            <input type="text" class="inputScore" ng-model="match[1].score">
+            <img ng-src="/images/country_flags/{{match[1].country}}.png" width="50" height="43">
+            <div class="radioContainer"><input ng-show="match[0].score == match[1].score" type="radio" name="{{title}}" ng-click="victorByPenalties('roundOf16', title, 1)" ></div>
+        </div>
+    </div>
+
+
+
+    <div ng-repeat="(title, match) in secondStageMatches.quarterFinals" ng-class="($index < 2) ? 'quarterFinalsLeft' : 'quarterFinalsRight'"  style="top:{{($index < 2) ? 50 + $index*300 : 50 + (($index-2) * 300)}}px;">
+        <div style="float: {{($index < 2) ? 'right' : 'left'}}">
+            <input type="text" style="width:20px; height:21px;" ng-model="match[0].score">
+            <img ng-src="/images/country_flags/{{match[0].country}}.png" width="50" height="43" style="display:inline-block; margin-top:6px">
+            <div class="radioContainer"><input ng-show="match[0].score == match[1].score" type="radio" ng-checked="true" name="{{title}}" ng-click="victorByPenalties('quarterFinals', title, 0)" ></div>
+        </div>
+        <div style="float: {{($index < 2) ? 'right' : 'left'}}; clear:both; margin-top:19px">vs</div>
+        <div style="float: {{($index < 2) ? 'right' : 'left'}}; clear:both; margin-top:23px">
+            <input type="text" style="width:20px; height:21px;" ng-model="match[1].score">
+            <img ng-src="/images/country_flags/{{match[1].country}}.png" width="50" height="43" style="display:inline-block; margin-top:6px">
+            <div class="radioContainer"><input ng-show="match[0].score == match[1].score" type="radio" name="{{title}}" ng-click="victorByPenalties('quarterFinals', title, 1)" ></div>
+        </div>
+    </div>
+
+
+
+    <div ng-repeat="(title, match) in secondStageMatches.semiFinals" ng-class="($index < 1 ) ? 'semiFinalsLeft' : 'semiFinalsRight'">
+        <div style="float: {{($index < 1) ? 'right' : 'left'}}">
+            <input type="text" style="width:20px; height:21px;" ng-model="match[0].score">
+            <img ng-src="/images/country_flags/{{match[0].country}}.png" width="50" height="43" style="display:inline-block; margin-top:6px">
+            <div class="radioContainer"><input ng-show="match[0].score == match[1].score" type="radio" ng-checked="true" name="{{title}}" ng-click="victorByPenalties('semiFinals', title, 0)" ></div>
+
+        </div>
+        <div style="float: {{($index < 1) ? 'right' : 'left'}}; clear:both; margin-top:91px">vs</div>
+        <div style="float: {{($index < 1) ? 'right' : 'left'}}; clear:both; margin-top:100px">
+            <input type="text" style="width:20px; height:21px;" ng-model="match[1].score">
+            <img ng-src="/images/country_flags/{{match[1].country}}.png" width="50" height="43" style="display:inline-block; margin-top:6px">
+            <div class="radioContainer"><input ng-show="match[0].score == match[1].score" type="radio" name="{{title}}" ng-click="victorByPenalties('semiFinals', title, 1)" ></div>
+
+        </div>
+    </div>
+
+
+    <div style="top: 250px; width:450px; height:50px; border:1px solid grey; position:absolute; z-index:1; background-color:white">
+        <input type="text" style="width:20px; height:21px; position: absolute; margin-left: 370px; margin-top: 13px" ng-model="secondStageMatches.final.ABCDEFGH[0].score">
+        <img ng-src="/images/country_flags/{{secondStageMatches.final.ABCDEFGH[0].country}}.png" width="50" height="43" style=" margin-left:387px; margin-top:10px">
+        <div style="width:20px; height:21px; position: absolute; margin-left: -3px; margin-top: 12px; display: inline-block"><input ng-show="match[0].score == match[1].score" type="radio" name="{{title}}" ng-click="victorByPenalties('final', 'ABCDEFGH', 0)" ></div>
+
+    </div>
+
+    <div style="top: 250px; right:0px; width:450px; height:50px; border:1px solid grey; position:absolute; z-index:1; background-color:white">
+        <div style="width:20px; height:21px; position: absolute; margin-left: 2px; margin-top: 12px; display: inline-block"><input ng-show="match[0].score == match[1].score" type="radio" name="{{title}}" ng-click="victorByPenalties('final', 'ABCDEFGH', 1)" ></div>
+        <img ng-src="/images/country_flags/{{secondStageMatches.final.ABCDEFGH[1].country}}.png" width="50" height="43" style=" margin-left:11px; margin-top:10px">
+        <input type="text" style="width:20px; height:21px; position: absolute; margin-left: -3px; margin-top: 13px" ng-model="secondStageMatches.final.ABCDEFGH[1].score">
+
+    </div>
+</div>
+
 
 <div class="footer">
-  <p>♥ from the Yeoman team</p>
+  <p style="text-align: right">Angular home page Made by <a href="https://twitter.com/ricardomacario">@ricardomacario</a>, Result scraper and page updating Made by <a href="https://twitter.com/victorv977">@victorv977</a></p>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">Loading results, please wait...</h2>
+      </div>
+      <div class="modal-body">
+        <div class="progress progress-striped active">
+          <div class="progress-bar"  role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+            <span class="sr-only">100% Complete</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
